@@ -1,0 +1,777 @@
+:root{
+  --bg:#0b0a10;
+  --bg2:#0f0d18;
+  --text:#f5f5f7;
+  --muted:rgba(245,245,247,.72);
+  --card:rgba(255,255,255,.06);
+  --card2:rgba(255,255,255,.08);
+  --stroke:rgba(255,255,255,.12);
+
+  --pink:#ff3ea5;
+  --pink2:#ff5db6;
+
+  --shadow: 0 18px 50px rgba(0,0,0,.55);
+  --radius: 18px;
+  --radius2: 22px;
+
+  --max: 1100px;
+
+  /* controles do HERO */
+  --hero-zoom: 80%;
+  --hero-top: -100px;
+
+  /* ✅ controles da vinheta / fade “esfumado” (ESCURECIDO) */
+  --v-edge-strong: rgba(11,10,16,.98);
+  --v-edge-mid: rgba(11,10,16,.68);
+  --v-edge-soft: rgba(11,10,16,.26);
+
+  --v-top-strong: rgba(11,10,16,.98);
+  --v-top-mid: rgba(11,10,16,.68);
+  --v-top-soft: rgba(11,10,16,.24);
+
+  --v-bottom-soft: rgba(11,10,16,.20);
+
+  /* ✅ glow refinado */
+  --glow-pink-1: rgba(255,62,165,.16);
+  --glow-pink-2: rgba(255,93,182,.12);
+  --glow-deep: rgba(140,80,255,.085);
+
+  /* ✅ pills/header */
+  --pill-bg-1: rgba(255,93,182,.18);
+  --pill-bg-2: rgba(255,62,165,.08);
+  --pill-border: rgba(255,93,182,.34);
+
+  /* ✅ toque mobile */
+  --press-scale: .985;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue";
+  background:
+    radial-gradient(1100px 560px at 20% 10%, var(--glow-pink-1), transparent 62%),
+    radial-gradient(900px 520px at 80% 20%, var(--glow-pink-2), transparent 62%),
+    radial-gradient(900px 520px at 55% 45%, var(--glow-deep), transparent 70%),
+    linear-gradient(180deg, var(--bg), var(--bg2));
+  color:var(--text);
+  overflow-x:hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ✅ Skip link (acessibilidade) */
+.skip-link{
+  position:absolute;
+  left:12px;
+  top:-60px;
+  z-index:99999;
+  padding:10px 12px;
+  border-radius:999px;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.16);
+  backdrop-filter: blur(10px);
+}
+.skip-link:focus{top:12px}
+
+/* ✅ VINHETA GLOBAL: suaviza laterais/topo do viewport (camufla “fim de imagem” e contornos) */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:40; /* abaixo da topbar (50), acima do conteúdo */
+  background:
+    /* laterais (esfumado) */
+    linear-gradient(90deg,
+      var(--v-edge-strong) 0%,
+      var(--v-edge-mid) 7%,
+      var(--v-edge-soft) 16%,
+      transparent 30%,
+      transparent 70%,
+      var(--v-edge-soft) 84%,
+      var(--v-edge-mid) 93%,
+      var(--v-edge-strong) 100%
+    ),
+    /* topo + leve base */
+    linear-gradient(180deg,
+      var(--v-top-strong) 0%,
+      var(--v-top-mid) 10%,
+      var(--v-top-soft) 18%,
+      transparent 32%,
+      transparent 78%,
+      rgba(11,10,16,.10) 90%,
+      var(--v-bottom-soft) 100%
+    ),
+    /* vinheta radial suave */
+    radial-gradient(1200px 760px at 50% 35%,
+      transparent 58%,
+      rgba(11,10,16,.42) 76%,
+      rgba(11,10,16,.88) 100%
+    );
+  opacity:.965; /* ✅ mais escuro */
+}
+
+::selection{background: rgba(255,62,165,.26); color:#fff;}
+
+.container{max-width:var(--max); margin:0 auto; padding:0 18px;}
+
+a{color:inherit; text-decoration:none}
+p{line-height:1.6; margin:0}
+h1,h2,h3{margin:0; line-height:1.12}
+ul{margin:0; padding:0; list-style:none}
+
+:focus-visible{
+  outline: 2px solid rgba(255,93,182,.75);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+/* BG accents */
+.bg-orb{
+  position:fixed;
+  pointer-events:none;
+  filter: blur(64px);
+  opacity:.48;
+  z-index:-1;
+  transform: translateZ(0);
+}
+.bg-orb--1{
+  width:520px;height:520px;
+  left:-180px; top:90px;
+  background:rgba(255,62,165,.30);
+  border-radius:50%;
+}
+.bg-orb--2{
+  width:620px;height:620px;
+  right:-260px; top:-120px;
+  background:rgba(255,93,182,.22);
+  border-radius:50%;
+}
+
+/* Topbar */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  backdrop-filter: blur(14px);
+  background: linear-gradient(180deg, rgba(10,10,16,.78), rgba(10,10,16,.40));
+  border-bottom:none;
+  box-shadow: 0 8px 26px rgba(0,0,0,.18);
+  isolation:isolate;
+}
+
+/* ✅ “esfumaça” no topo/laterais do cabeçalho */
+.topbar::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background:
+    linear-gradient(90deg,
+      rgba(11,10,16,.76) 0%,
+      rgba(11,10,16,.42) 10%,
+      transparent 26%,
+      transparent 74%,
+      rgba(11,10,16,.42) 90%,
+      rgba(11,10,16,.76) 100%
+    ),
+    linear-gradient(180deg,
+      rgba(11,10,16,.78) 0%,
+      rgba(11,10,16,.30) 46%,
+      transparent 100%
+    );
+  opacity:.98;
+}
+
+/* ✅ reforço de fade na BASE do header (para “fundir” com o hero) */
+.topbar::after{
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:-24px;
+  height:42px;
+  pointer-events:none;
+  z-index:-1;
+  background: linear-gradient(
+    180deg,
+    rgba(10,10,16,.00) 0%,
+    rgba(10,10,16,.45) 40%,
+    rgba(10,10,16,.72) 100%
+  );
+  filter: blur(7px);
+  opacity:.95;
+}
+
+.topbar__inner{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end; /* ✅ logo removida */
+  gap:12px;
+  padding:12px 18px;
+  flex-wrap:wrap; /* ✅ melhora no mobile (não estoura) */
+}
+
+/* ✅ Logo removido (caso exista no HTML, some) */
+.brand{display:none !important;}
+
+/* ✅ remove caixa/ID usuário (várias variações comuns) */
+.topbar .user-id,
+.topbar .userId,
+.topbar #userId,
+.topbar #uid,
+.topbar .uid,
+.topbar .topbar__id,
+.topbar .topbar__user,
+.topbar .idBox,
+.topbar .badge--id,
+.topbar [data-user-id]{
+  display:none !important;
+}
+
+/* ✅ CTA duplicada fora do nav (no seu HTML existe .topbar__cta) -> esconde para não duplicar */
+.topbar__cta{display:none !important;}
+
+/* Nav (pills) */
+.nav{
+  display:flex;
+  gap:10px;
+  opacity:1;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+/* ✅ transforma TODOS os itens do nav em pill rosa (inclusive “Comprar agora” se estiver no nav) */
+.nav a{
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid var(--pill-border);
+  background:
+    linear-gradient(180deg, var(--pill-bg-1), var(--pill-bg-2));
+  color: rgba(245,245,247,.92);
+  box-shadow:
+    0 10px 22px rgba(0,0,0,.18),
+    0 0 0 1px rgba(255,93,182,.10) inset;
+  transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease, filter .18s ease;
+  backdrop-filter: blur(10px);
+}
+.nav a:hover{
+  transform: translateY(-1px);
+  border-color: rgba(255,93,182,.55);
+  background:
+    linear-gradient(180deg, rgba(255,93,182,.26), rgba(255,62,165,.12));
+  box-shadow:
+    0 14px 30px rgba(0,0,0,.22),
+    0 0 26px rgba(255,93,182,.14);
+  filter: saturate(1.03);
+}
+
+/* Buttons */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:12px 16px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.06);
+  transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+  will-change: transform;
+}
+.btn:hover{
+  transform: translateY(-1px);
+  background:rgba(255,255,255,.10);
+  border-color:rgba(255,255,255,.16);
+}
+
+/* pills no header (se algum botão ficar fora do nav em outros trechos) */
+.topbar .btn{
+  border-radius:999px;
+  padding:10px 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
+  border-color: rgba(255,255,255,.12);
+  box-shadow: 0 10px 22px rgba(0,0,0,.18);
+  backdrop-filter: blur(10px);
+}
+.topbar .btn:hover{
+  transform: translateY(-1px);
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+  border-color: rgba(255,255,255,.18);
+  box-shadow: 0 14px 30px rgba(0,0,0,.22);
+}
+
+/* destaque rosa */
+.btn--primary{
+  border-color: rgba(255,62,165,.55);
+  background: linear-gradient(180deg, rgba(255,93,182,.98), rgba(255,62,165,.92));
+  box-shadow:
+    0 18px 45px rgba(255,62,165,.22),
+    0 0 34px rgba(255,93,182,.16);
+  position: relative;
+  overflow: hidden;
+}
+.btn--primary:hover{
+  transform: translateY(-2px);
+  box-shadow:
+    0 22px 60px rgba(255,62,165,.28),
+    0 0 44px rgba(255,93,182,.20);
+}
+.btn--primary::after{
+  content:"";
+  position:absolute;
+  top:-40%;
+  left:-60%;
+  width:60%;
+  height:180%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+  transform: rotate(18deg);
+  opacity:0;
+}
+.btn--primary:hover::after{opacity:1; animation: shine .9s ease;}
+@keyframes shine{ from{left:-60%} to{left:140%} }
+
+.btn--outline{
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.18);
+}
+.btn--outline:hover{
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.26);
+}
+
+.btn--lg{padding:14px 18px; border-radius:16px; font-weight:700}
+.btn--sm{padding:10px 12px; border-radius:14px; font-size:14px}
+.topbar .btn--lg,
+.topbar .btn--sm{border-radius:999px;}
+
+/* ✅ toque mobile / sensação “app” */
+@media (hover:none){
+  .btn:active,
+  .nav a:active{
+    transform: scale(var(--press-scale));
+    filter: brightness(1.04);
+  }
+}
+
+/* Cards */
+.card{
+  background: linear-gradient(180deg, var(--card2), var(--card));
+  border:1px solid rgba(255,255,255,.10);
+  border-radius: var(--radius2);
+  box-shadow: var(--shadow);
+}
+
+/* ✅ padding padrão de cards (melhor leitura) */
+.card{padding:16px}
+
+/* Chips */
+.chip{
+  padding: 10px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: rgba(255,255,255,.70);
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  backdrop-filter: blur(10px);
+}
+
+/* Hover pop */
+.hover-pop{transition: transform .18s ease, border-color .18s ease, background .18s ease}
+.hover-pop:hover{transform: translateY(-3px); border-color: rgba(255,255,255,.16)}
+
+/* Reveal animations */
+.reveal{
+  opacity:0;
+  transform: translateY(14px);
+  transition: opacity .6s ease, transform .6s ease;
+  will-change: opacity, transform;
+}
+.reveal.is-in{opacity:1; transform: translateY(0)}
+
+.stagger > *{
+  opacity:0;
+  transform: translateY(10px);
+}
+.stagger.is-in > *{
+  opacity:1;
+  transform: translateY(0);
+  transition: opacity .55s ease, transform .55s ease;
+}
+
+/* Loader */
+.loader{
+  position:fixed; inset:0; z-index:9999;
+  display:grid; place-items:center;
+  background: rgba(6,5,10,.92);
+  backdrop-filter: blur(10px);
+  transition: opacity .35s ease, visibility .35s ease;
+}
+.loader.is-hidden{opacity:0; visibility:hidden}
+.loader__card{
+  width:min(360px, 92vw);
+  padding:18px;
+  border-radius: 22px;
+  border:1px solid rgba(255,255,255,.10);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  text-align:center;
+}
+.loader__spinner{
+  width:44px; height:44px;
+  border-radius:999px;
+  border:3px solid rgba(255,255,255,.18);
+  border-top-color: rgba(255,93,182,.95);
+  margin: 4px auto 10px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin{to{transform: rotate(360deg)}}
+.loader__text{color:rgba(255,255,255,.75)}
+
+/* ===========================
+   HERO
+   =========================== */
+
+.hero--split{
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  min-height: 620px;
+}
+
+.hero--split::before{
+  content:"";
+  position:absolute;
+  inset:-220px -140px auto -140px;
+  height: 560px;
+  background:
+    radial-gradient(closest-side, rgba(255,62,165,.18), transparent 68%),
+    radial-gradient(closest-side, rgba(255,93,182,.12), transparent 70%);
+  filter: blur(18px);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ✅ vinheta “local” do hero (reforça topo e laterais exatamente onde a imagem termina) */
+.hero--split::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:2;
+  background:
+    linear-gradient(180deg,
+      rgba(11,10,16,.90) 0%,
+      rgba(11,10,16,.52) 10%,
+      rgba(11,10,16,.18) 18%,
+      transparent 34%
+    ),
+    linear-gradient(90deg,
+      rgba(11,10,16,.86) 0%,
+      rgba(11,10,16,.44) 12%,
+      transparent 30%,
+      transparent 70%,
+      rgba(11,10,16,.44) 88%,
+      rgba(11,10,16,.86) 100%
+    );
+  opacity:.94;
+}
+
+.heroSplit{
+  display:grid;
+  gap: 34px;
+  align-items:center;
+  position: relative;
+
+  padding: 60px 0 30px;
+  min-height: 620px;
+}
+
+.heroSplit__left{
+  position: relative;
+  z-index: 3;
+  max-width: 560px;
+}
+
+.heroSplit__title{
+  font-size: clamp(34px, 4.2vw, 56px);
+  line-height: 1.06;
+  letter-spacing: -0.6px;
+  max-width: 520px;
+  text-shadow: 0 10px 40px rgba(0,0,0,.45);
+}
+
+.heroSplit__subtitle{
+  margin-top: 12px;
+  max-width: 62ch;
+  color: rgba(255,255,255,.74);
+  font-size: 16px;
+}
+
+.heroSplit__actions{
+  margin-top: 18px;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.heroSplit__chips{
+  margin-top: 14px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.heroSplit__trust{
+  margin-top: 12px;
+  font-size: 13px;
+  color: rgba(255,255,255,.55);
+}
+
+/* IMAGEM HERO */
+.heroSplit__media{
+  position:absolute;
+  top: var(--hero-top);
+  left:50%;
+  transform: translateX(-50%);
+  width:100vw;
+  height: calc(100% + 220px);
+
+  background-image: var(--hero);
+  background-repeat: no-repeat;
+  background-size: var(--hero-zoom) auto;
+  background-position: right 0%;
+
+  z-index: 1;
+  pointer-events:none;
+  opacity: .98;
+  filter: saturate(1.02) contrast(1.02);
+}
+
+/* overlay premium + ✅ reforço de fade no topo/laterais (ROSTO MAIS CLARO) */
+.heroSplit__media::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    /* topo */
+    linear-gradient(
+      180deg,
+      rgba(11,10,16,.92) 0%,
+      rgba(11,10,16,.56) 10%,
+      rgba(11,10,16,.20) 18%,
+      transparent 36%
+    ),
+
+    /* ✅ laterais (direita mais clara) */
+    linear-gradient(
+      90deg,
+      rgba(11,10,16,.58) 0%,
+      rgba(11,10,16,.26) 14%,
+      transparent 34%,
+      transparent 66%,
+      rgba(11,10,16,.06) 86%,
+      rgba(11,10,16,.14) 100%
+    ),
+
+    /* existente: escurece esquerda pro texto ficar legível */
+    linear-gradient(
+      90deg,
+      rgba(11,10,16,.90) 0%,
+      rgba(11,10,16,.70) 22%,
+      rgba(11,10,16,.40) 44%,
+      rgba(11,10,16,.18) 60%,
+      rgba(11,10,16,.06) 70%,
+      transparent 80%
+    ),
+
+    radial-gradient(1100px 520px at 72% 45%, rgba(0,0,0,.24), transparent 58%),
+    radial-gradient(circle at 30% 35%, rgba(255,62,165,.14), transparent 62%),
+    radial-gradient(circle at 72% 28%, rgba(255,93,182,.10), transparent 58%);
+}
+
+/* glow/softness */
+.heroSplit__media::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 78% 38%, rgba(255,62,165,.12), transparent 62%),
+    radial-gradient(circle at 50% 10%, rgba(0,0,0,.24), transparent 55%);
+  filter: blur(10px);
+  opacity: .9;
+}
+
+/* ===========================
+   SECTIONS
+   =========================== */
+.section{padding:34px 0}
+.section--soft{
+  background: linear-gradient(180deg, rgba(255,62,165,.06), rgba(255,255,255,0));
+  border-top:1px solid rgba(255,255,255,.06);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.section__head{
+  max-width: 78ch;
+  margin-bottom:18px;
+}
+.section__head h2{
+  font-size: clamp(22px, 3.2vw, 34px);
+  letter-spacing:-.3px;
+}
+.section__head p{margin-top:10px; color:var(--muted)}
+
+.grid-2{display:grid; gap:14px;}
+.grid-3{display:grid; gap:14px;}
+
+.bullets{margin-top:12px; display:grid; gap:10px;}
+.bullets li{
+  position:relative;
+  padding-left:26px;
+  color:rgba(255,255,255,.86);
+}
+.bullets li::before{
+  content:"✓";
+  position:absolute; left:0; top:-1px;
+  color:#7CFFB6;
+  font-weight:900;
+}
+
+.features{margin-top:14px}
+.feature{padding:16px}
+.icon{
+  width:34px; height:34px; border-radius:12px;
+  display:grid; place-items:center;
+  background: rgba(255,62,165,.12);
+  border:1px solid rgba(255,62,165,.25);
+  margin-bottom:10px;
+  font-weight:900;
+  color: rgba(255,255,255,.92);
+}
+.feature h3{font-size:18px}
+.feature p{margin-top:8px; color:rgba(255,255,255,.70)}
+
+.cta-strip{
+  margin-top:16px;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  align-items:flex-start;
+  justify-content:space-between;
+}
+
+/* Final */
+.final{padding:34px 0 18px}
+.final__card{padding:16px; display:grid; gap:14px;}
+.final__left p{margin-top:10px; color:rgba(255,255,255,.70)}
+.final__left .btn{margin-top:12px}
+.final__right{display:grid; align-content:start}
+.mini-mock{padding:16px}
+.mini-mock__title{font-weight:900; color:rgba(255,255,255,.92)}
+.mini-mock__subtitle{font-size:22px; font-weight:900; color:rgba(255,93,182,.95); margin-top:2px}
+.mini-mock__list{margin-top:10px; display:grid; gap:8px; color:rgba(255,255,255,.78)}
+.mini-mock__list li{padding-left:16px; position:relative}
+.mini-mock__list li::before{content:"•"; position:absolute; left:0; top:-1px; color:rgba(255,255,255,.55)}
+
+.micro{
+  margin-top: 10px;
+  font-size: 13px;
+  color: rgba(255,255,255,.55);
+}
+
+.footer{
+  margin-top:14px;
+  text-align:center;
+  color:rgba(255,255,255,.55);
+  font-size:13px;
+}
+
+/* ===========================
+   RESPONSIVE
+   =========================== */
+@media (min-width: 860px){
+  .grid-2{grid-template-columns: 1fr 1fr}
+  .grid-3{grid-template-columns: repeat(3, 1fr)}
+  .cta-strip{flex-direction:row; align-items:center}
+  .final__card{grid-template-columns: 1.35fr .65fr; align-items:center; padding:18px}
+}
+
+/* ✅ Mobile refinado */
+@media (max-width: 979px){
+  :root{
+    --hero-zoom: 122%;
+    --hero-top: -90px;
+  }
+
+  .container{padding:0 16px;}
+
+  /* header/nav no mobile: scroll + snap */
+  .topbar__inner{
+    padding:10px 14px;
+    gap:10px;
+  }
+  .nav{
+    width:100%;
+    justify-content:flex-end;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom:6px;
+    scroll-snap-type: x mandatory;
+  }
+  .nav::-webkit-scrollbar{height:0}
+  .nav a{
+    white-space:nowrap;
+    scroll-snap-align: end;
+  }
+
+  /* hero mais compacto e com CTA stack */
+  .hero--split{min-height: 560px;}
+  .heroSplit{
+    min-height: 560px;
+    padding: 42px 0 18px;
+    gap:22px;
+  }
+  .heroSplit__title{
+    font-size: clamp(30px, 8vw, 42px);
+    max-width: 22ch;
+  }
+  .heroSplit__subtitle{
+    font-size: 15px;
+    color: rgba(255,255,255,.76);
+    max-width: 46ch;
+  }
+  .heroSplit__actions{
+    gap:10px;
+  }
+  .heroSplit__actions .btn{
+    width:100%;
+    justify-content:center;
+  }
+
+  /* chips com mais conforto */
+  .heroSplit__chips{gap:8px}
+  .chip{padding:10px 12px; font-size:13px}
+
+  /* seções com mais respiro */
+  .section{padding:42px 0}
+  .section__head{margin-bottom:16px}
+  .card{padding:18px}
+  .feature{padding:18px}
+
+  /* vinhetas um pouco mais fortes no mobile (normalmente aparece mais a “borda”) */
+  .hero--split::after{opacity:.96;}
+  body::after{opacity:.97;}
+
+  /* evita zoom ao tocar input (se existir no futuro) */
+  input, button, select, textarea{font-size:16px;}
+}
+@media (max-width: 420px){
+  .heroSplit__title{font-size: 30px;}
+  .nav a{padding:9px 12px; font-size:13px}
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .reveal, .stagger > *, .btn, .hover-pop, .loader{transition:none !important}
+  .loader__spinner{animation:none !important}
+  .btn--primary::after{animation:none !important}
+}
