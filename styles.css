@@ -1,0 +1,948 @@
+/* =========================================================
+   VARIÁVEIS GLOBAIS
+   ========================================================= */
+:root{
+  --bg:#0b0a10;
+  --bg2:#120f1d;
+  --text:#f5f5f7;
+  --muted:rgba(245,245,247,.72);
+  --card:rgba(255,255,255,.06);
+  --card2:rgba(255,255,255,.08);
+  --stroke:rgba(255,255,255,.12);
+
+  --pink:#ff3ea5;
+  --pink2:#ff5db6;
+  --green:#7CFFB6;
+
+  --shadow:0 18px 50px rgba(0,0,0,.50);
+  --radius:18px;
+  --radius2:22px;
+
+  --max:1100px;
+  --press-scale:.985;
+}
+
+/* =========================================================
+   RESET / BASE
+   ========================================================= */
+*{box-sizing:border-box}
+
+html{scroll-behavior:smooth}
+
+body{
+  margin:0;
+  font-family:'Montserrat', system-ui, sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(1000px 560px at 15% 10%, rgba(255,62,165,.14), transparent 62%),
+    radial-gradient(900px 520px at 80% 18%, rgba(255,93,182,.10), transparent 62%),
+    radial-gradient(700px 400px at 55% 45%, rgba(140,80,255,.07), transparent 70%),
+    linear-gradient(180deg, var(--bg), var(--bg2));
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* Vinheta global do layout */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:5;
+  background:
+    linear-gradient(90deg,
+      rgba(11,10,16,.92) 0%,
+      rgba(11,10,16,.42) 10%,
+      transparent 26%,
+      transparent 74%,
+      rgba(11,10,16,.42) 90%,
+      rgba(11,10,16,.92) 100%
+    ),
+    linear-gradient(180deg,
+      rgba(11,10,16,.88) 0%,
+      rgba(11,10,16,.46) 10%,
+      rgba(11,10,16,.10) 22%,
+      transparent 36%,
+      transparent 84%,
+      rgba(11,10,16,.12) 100%
+    );
+  opacity:.92;
+}
+
+a{color:inherit;text-decoration:none}
+p{margin:0;line-height:1.6}
+h1,h2,h3{margin:0;line-height:1.12}
+ul{margin:0;padding:0;list-style:none}
+
+:focus-visible{
+  outline:2px solid rgba(255,93,182,.75);
+  outline-offset:3px;
+  border-radius:10px;
+}
+
+/* =========================================================
+   UTILITÁRIOS GERAIS
+   ========================================================= */
+.container{
+  width:min(100%, var(--max));
+  margin:0 auto;
+  padding:0 18px;
+  position:relative;
+  z-index:2;
+}
+
+.skip-link{
+  position:absolute;
+  left:12px;
+  top:16px;
+  z-index:9999;
+  padding:10px 14px;
+  border-radius:16px;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,93,182,.55);
+  backdrop-filter:blur(10px);
+  color:#fff;
+  text-decoration:none;
+}
+
+.bg-orb{
+  position:fixed;
+  pointer-events:none;
+  filter:blur(64px);
+  opacity:.42;
+  z-index:0;
+  transform:translateZ(0);
+}
+
+.bg-orb--1{
+  width:520px;
+  height:520px;
+  left:-180px;
+  top:90px;
+  background:rgba(255,62,165,.28);
+  border-radius:50%;
+}
+
+.bg-orb--2{
+  width:620px;
+  height:620px;
+  right:-260px;
+  top:-120px;
+  background:rgba(255,93,182,.18);
+  border-radius:50%;
+}
+
+/* =========================================================
+   HEADER / TOPBAR
+   ========================================================= */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:20;
+  backdrop-filter:blur(14px);
+  background:linear-gradient(180deg, rgba(10,10,16,.78), rgba(10,10,16,.38));
+  box-shadow:0 8px 26px rgba(0,0,0,.16);
+  isolation:isolate;
+}
+
+.topbar::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-20px;
+  height:38px;
+  pointer-events:none;
+  background:linear-gradient(180deg, rgba(10,10,16,0), rgba(10,10,16,.58));
+  filter:blur(7px);
+  opacity:.92;
+}
+
+.topbar__inner{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:12px;
+  padding:12px 18px;
+  min-height:72px;
+}
+
+.brand{display:none !important;}
+
+.nav{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.nav a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,93,182,.34);
+  background:linear-gradient(180deg, rgba(255,93,182,.18), rgba(255,62,165,.08));
+  color:rgba(245,245,247,.92);
+  box-shadow:
+    0 10px 22px rgba(0,0,0,.18),
+    0 0 0 1px rgba(255,93,182,.10) inset;
+  transition:transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease, filter .18s ease;
+  backdrop-filter:blur(10px);
+  text-align:center;
+}
+
+.nav a:hover{
+  transform:translateY(-1px);
+  border-color:rgba(255,93,182,.55);
+  background:linear-gradient(180deg, rgba(255,93,182,.26), rgba(255,62,165,.12));
+  box-shadow:
+    0 14px 30px rgba(0,0,0,.22),
+    0 0 26px rgba(255,93,182,.14);
+}
+
+/* =========================================================
+   BOTÕES
+   ========================================================= */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 16px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  transition:transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+  will-change:transform;
+  font-family:inherit;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+  background:rgba(255,255,255,.10);
+  border-color:rgba(255,255,255,.16);
+}
+
+.btn--primary{
+  border-color:rgba(255,62,165,.55);
+  background:linear-gradient(180deg, rgba(255,93,182,.98), rgba(255,62,165,.92));
+  box-shadow:
+    0 18px 45px rgba(255,62,165,.22),
+    0 0 34px rgba(255,93,182,.16);
+  position:relative;
+  overflow:hidden;
+  font-weight:700;
+}
+
+.btn--primary:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 22px 60px rgba(255,62,165,.28),
+    0 0 44px rgba(255,93,182,.20);
+}
+
+.btn--primary::after{
+  content:"";
+  position:absolute;
+  top:-40%;
+  left:-60%;
+  width:60%;
+  height:180%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+  transform:rotate(18deg);
+  opacity:0;
+}
+
+.btn--primary:hover::after{
+  opacity:1;
+  animation:shine .9s ease;
+}
+
+@keyframes shine{
+  from{left:-60%}
+  to{left:140%}
+}
+
+.btn--outline{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.18);
+}
+
+.btn--outline:hover{
+  background:rgba(255,255,255,.08);
+  border-color:rgba(255,255,255,.26);
+}
+
+.btn--lg{
+  padding:14px 18px;
+  border-radius:16px;
+  font-weight:700;
+}
+
+.btn--sm{
+  padding:10px 12px;
+  border-radius:999px;
+  font-size:14px;
+}
+
+@media (hover:none){
+  .btn:active,
+  .nav a:active{
+    transform:scale(var(--press-scale));
+    filter:brightness(1.04);
+  }
+}
+
+/* =========================================================
+   CARDS / CHIPS / EFEITOS
+   ========================================================= */
+.card{
+  background:linear-gradient(180deg, var(--card2), var(--card));
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:var(--radius2);
+  box-shadow:var(--shadow);
+  padding:16px;
+}
+
+.chip{
+  padding:10px 12px;
+  border-radius:999px;
+  font-size:13px;
+  color:rgba(255,255,255,.74);
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  backdrop-filter:blur(10px);
+  text-align:center;
+}
+
+.hover-pop{
+  transition:transform .18s ease, border-color .18s ease, background .18s ease;
+}
+
+.hover-pop:hover{
+  transform:translateY(-3px);
+  border-color:rgba(255,255,255,.16);
+}
+
+/* =========================================================
+   ANIMAÇÕES DE ENTRADA
+   ========================================================= */
+.reveal{
+  opacity:0;
+  transform:translateY(14px);
+  transition:opacity .6s ease, transform .6s ease;
+  will-change:opacity, transform;
+}
+
+.reveal.is-in{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.stagger > *{
+  opacity:0;
+  transform:translateY(10px);
+}
+
+.stagger.is-in > *{
+  opacity:1;
+  transform:translateY(0);
+  transition:opacity .55s ease, transform .55s ease;
+}
+
+/* =========================================================
+   LOADER
+   ========================================================= */
+.loader{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:grid;
+  place-items:center;
+  background:rgba(6,5,10,.92);
+  backdrop-filter:blur(10px);
+  transition:opacity .35s ease, visibility .35s ease;
+}
+
+.loader.is-hidden{
+  opacity:0;
+  visibility:hidden;
+}
+
+.loader__card{
+  width:min(360px, 92vw);
+  padding:18px;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.10);
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  text-align:center;
+}
+
+.loader__spinner{
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  border:3px solid rgba(255,255,255,.18);
+  border-top-color:rgba(255,93,182,.95);
+  margin:4px auto 10px;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+.loader__text{
+  color:rgba(255,255,255,.75);
+}
+
+/* =========================================================
+   HERO
+   Desktop usa a arte horizontal original
+   ========================================================= */
+.hero{
+  position:relative;
+  overflow:hidden;
+  min-height:700px;
+  display:flex;
+  align-items:center;
+  background-image:url("assets/hero-desktop.png");
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position:center right;
+  isolation:isolate;
+}
+
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:24px 18px 0 18px;
+  border-radius:28px;
+  pointer-events:none;
+  z-index:0;
+}
+
+.hero__overlay{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(11,10,16,.78) 0%,
+      rgba(11,10,16,.58) 24%,
+      rgba(11,10,16,.30) 42%,
+      rgba(11,10,16,.10) 58%,
+      rgba(11,10,16,0) 72%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(11,10,16,.18) 0%,
+      rgba(11,10,16,0) 24%,
+      rgba(11,10,16,0) 76%,
+      rgba(11,10,16,.18) 100%
+    );
+}
+
+.hero__container{
+  position:relative;
+  z-index:2;
+  width:min(100%, var(--max));
+  min-height:700px;
+  display:flex;
+  align-items:center;
+  padding-top:48px;
+  padding-bottom:36px;
+}
+
+.hero__content{
+  max-width:540px;
+  padding-top:44px;
+}
+
+.hero__title{
+  font-size:clamp(40px, 4.8vw, 70px);
+  line-height:.95;
+  letter-spacing:-2px;
+  max-width:8.8ch;
+  text-transform:none;
+  font-weight:700;
+  font-family:'Montserrat', system-ui, sans-serif;
+  text-shadow:0 14px 36px rgba(0,0,0,.28);
+};
+
+
+.hero__subtitle{
+  margin-top:18px;
+  max-width:62ch;
+  color:rgba(255,255,255,.82);
+  font-size:15px;
+  line-height:1.55;
+  text-transform:uppercase;
+  font-weight:500;
+}
+
+.hero__actions{
+  margin-top:20px;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.hero__chips{
+  margin-top:14px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.hero__trust{
+  margin-top:14px;
+  font-size:13px;
+  color:rgba(255,255,255,.58);
+}
+
+/* =========================================================
+   SEÇÕES GERAIS
+   ========================================================= */
+.section{
+  padding:34px 0;
+}
+
+.section--soft{
+  background:linear-gradient(180deg, rgba(255,62,165,.06), rgba(255,255,255,0));
+  border-top:1px solid rgba(255,255,255,.06);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.section__head{
+  max-width:78ch;
+  margin-bottom:18px;
+}
+
+.section__head h2{
+  font-size:clamp(22px, 3.2vw, 34px);
+  letter-spacing:-.3px;
+}
+
+.section__head p{
+  margin-top:10px;
+  color:var(--muted);
+}
+
+.grid-2{display:grid;gap:14px}
+.grid-3{display:grid;gap:14px}
+
+.bullets{
+  margin-top:12px;
+  display:grid;
+  gap:10px;
+}
+
+.bullets li{
+  position:relative;
+  padding-left:26px;
+  color:rgba(255,255,255,.86);
+}
+
+.bullets li::before{
+  content:"✓";
+  position:absolute;
+  left:0;
+  top:-1px;
+  color:var(--green);
+  font-weight:900;
+}
+
+.features{margin-top:14px}
+
+.feature{padding:16px}
+
+.icon{
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,62,165,.12);
+  border:1px solid rgba(255,62,165,.25);
+  margin-bottom:10px;
+  font-weight:900;
+  color:rgba(255,255,255,.92);
+}
+
+.feature h3{font-size:18px}
+
+.feature p{
+  margin-top:8px;
+  color:rgba(255,255,255,.70);
+}
+
+.cta-strip{
+  margin-top:16px;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  align-items:flex-start;
+  justify-content:space-between;
+}
+
+/* =========================================================
+   SEÇÃO FINAL
+   ========================================================= */
+.final{
+  padding:34px 0 18px;
+}
+
+.final__card{
+  padding:16px;
+  display:grid;
+  gap:14px;
+}
+
+.final__left p{
+  margin-top:10px;
+  color:rgba(255,255,255,.70);
+}
+
+.final__left .btn{
+  margin-top:12px;
+}
+
+.final__right{
+  display:grid;
+  align-content:start;
+}
+
+.mini-mock{
+  padding:16px;
+}
+
+.mini-mock__title{
+  font-weight:900;
+  color:rgba(255,255,255,.92);
+}
+
+.mini-mock__subtitle{
+  font-size:22px;
+  font-weight:900;
+  color:rgba(255,93,182,.95);
+  margin-top:2px;
+}
+
+.mini-mock__list{
+  margin-top:10px;
+  display:grid;
+  gap:8px;
+  color:rgba(255,255,255,.78);
+}
+
+.mini-mock__list li{
+  padding-left:16px;
+  position:relative;
+}
+
+.mini-mock__list li::before{
+  content:"•";
+  position:absolute;
+  left:0;
+  top:-1px;
+  color:rgba(255,255,255,.55);
+}
+
+.micro{
+  margin-top:10px;
+  font-size:13px;
+  color:rgba(255,255,255,.55);
+}
+
+.footer{
+  margin-top:14px;
+  text-align:center;
+  color:rgba(255,255,255,.55);
+  font-size:13px;
+}
+
+/* =========================================================
+   BREAKPOINTS - DESKTOP MAIOR
+   ========================================================= */
+@media (min-width:860px){
+  .grid-2{grid-template-columns:1fr 1fr}
+  .grid-3{grid-template-columns:repeat(3, 1fr)}
+  .cta-strip{flex-direction:row; align-items:center}
+  .final__card{grid-template-columns:1.35fr .65fr; align-items:center; padding:18px}
+}
+
+/* =========================================================
+   BREAKPOINTS - TABLET / NOTEBOOK MENOR
+   ========================================================= */
+@media (max-width:979px){
+  .container{padding:0 14px}
+
+  .topbar__inner{
+    justify-content:center;
+    padding:8px 0 8px;
+    min-height:auto;
+  }
+
+  .nav{
+    width:100%;
+    display:flex;
+    flex-wrap:nowrap;
+    gap:6px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    justify-content:flex-start;
+    padding:0 0 2px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+
+  .nav::-webkit-scrollbar{display:none}
+
+  .nav a{
+    flex:0 0 auto;
+    min-height:32px;
+    padding:6px 10px;
+    font-size:11px;
+    line-height:1;
+    white-space:nowrap;
+  }
+
+  .hero{
+    min-height:620px;
+    background-position:62% center;
+  }
+
+  .hero__container{
+    min-height:620px;
+    padding-top:34px;
+    padding-bottom:26px;
+  }
+
+  .hero__content{
+    max-width:500px;
+    padding-top:30px;
+  }
+
+  .hero__title{
+    font-size:clamp(34px, 5vw, 54px);
+    max-width:9.2ch;
+  }
+
+  .hero__subtitle{
+    font-size:14px;
+    max-width:56ch;
+  }
+
+  .section{padding:42px 0}
+  .section__head{margin-bottom:16px}
+  .card{padding:18px}
+  .feature{padding:18px}
+
+  input, button, select, textarea{
+    font-size:16px;
+  }
+}
+
+/* =========================================================
+   BREAKPOINTS - MOBILE
+   Mobile usa a arte vertical recortada
+   com overlay mais claro para mostrar melhor o fundo
+   ========================================================= */
+@media (max-width:768px){
+  body::after{
+    background:none;
+    opacity:0;
+  }
+
+  .container{
+    padding:0 20px;
+  }
+
+  .hero{
+    min-height:760px;
+    align-items:flex-start;
+    background-image:url("assets/hero-mobile.png");
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:center top;
+  }
+
+  .hero__overlay{
+  background:
+    linear-gradient(
+      180deg,
+     rgba(11,10,16,.25) 0%,
+      rgba(11,10,16,.40) 20%,
+      rgba(11,10,16,.60) 40%,
+      rgba(11,10,16,.80) 60%,
+      rgba(11,10,16,.92) 80%,
+      rgba(11,10,16,.98) 100%
+    );
+}
+
+  .hero__container{
+    min-height:760px;
+    align-items:flex-end;
+    justify-content:center;
+    padding-top:26px;
+    padding-bottom:28px;
+  }
+
+  .hero__content{
+    width:100%;
+    max-width:100%;
+    text-align:center;
+    padding-top:0;
+  }
+
+.hero__title{
+  width:100%;
+  max-width:100%;
+  font-size:clamp(28px, 8vw, 42px);
+  line-height:.96;
+  text-align:center;
+  margin-inline:auto;
+  letter-spacing:-1.6px;
+  text-transform:none;
+  font-weight:700;
+}
+  .hero__subtitle{
+    width:100%;
+    max-width:100%;
+    font-size:12px;
+    margin-top:14px;
+    text-align:center;
+    color:rgba(255,255,255,.88);
+  }
+
+  .hero__actions{
+    width:100%;
+    margin-top:18px;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+  }
+
+  .hero__actions .btn{
+    width:100%;
+    max-width:420px;
+    justify-content:center;
+  }
+
+  .hero__chips{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    justify-content:center;
+  }
+
+  .hero__trust{
+    text-align:center;
+  }
+}
+
+/* =========================================================
+   BREAKPOINTS - MOBILE MENOR
+   ========================================================= */
+@media (max-width:575px){
+  .topbar__inner{
+    padding:8px 0 6px;
+  }
+
+  .nav{gap:6px}
+
+  .nav a{
+    min-height:30px;
+    font-size:10.5px;
+    padding:6px 9px;
+  }
+
+  .hero{
+    min-height:740px;
+    background-image:url("assets/hero-mobile.png");
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:center top;
+  }
+
+  .hero__container{
+    min-height:740px;
+    padding-bottom:22px;
+  }
+
+  .hero__title{
+  font-size:30px;
+  line-height:.96;
+  letter-spacing:-1.4px;
+  font-weight:700;
+  text-transform:none;
+}
+  }
+
+  .hero__subtitle{
+    font-size:11px;
+  }
+
+  .hero__chips{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .chip{
+    font-size:12px;
+    padding:8px 10px;
+  }
+}
+
+/* =========================================================
+   BREAKPOINTS - TELAS MUITO PEQUENAS
+   ========================================================= */
+@media (max-width:390px){
+  .nav a{
+    min-height:28px;
+    font-size:10px;
+    padding:5px 8px;
+  }
+
+  .hero{
+    min-height:720px;
+    background-image:url("assets/hero-mobile.png");
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:center top;
+  }
+
+  .hero__container{
+    min-height:720px;
+  }
+
+  .hero__chips{
+    grid-template-columns:1fr;
+  }
+}
+
+/* =========================================================
+   ACESSIBILIDADE / REDUÇÃO DE MOVIMENTO
+   ========================================================= */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reveal,
+  .stagger > *,
+  .btn,
+  .hover-pop,
+  .loader{
+    transition:none !important;
+  }
+
+  .loader__spinner{animation:none !important}
+  .btn--primary::after{animation:none !important}
+}
