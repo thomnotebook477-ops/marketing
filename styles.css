@@ -901,7 +901,6 @@ ul{margin:0;padding:0;list-style:none}
     font-size:12px;
     padding:8px 10px;
   }
-}
 
 /* =========================================================
    BREAKPOINTS - TELAS MUITO PEQUENAS
@@ -945,4 +944,5 @@ ul{margin:0;padding:0;list-style:none}
 
   .loader__spinner{animation:none !important}
   .btn--primary::after{animation:none !important}
+
 }
